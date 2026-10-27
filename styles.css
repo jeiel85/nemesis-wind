@@ -1,0 +1,694 @@
+/* styles.css - 바람의 네메시스: 흉수군단록 (Nemesis of the Winds) */
+:root {
+  --bg-deep: #090d16;
+  --bg-panel: #111827;
+  --bg-card: #1e293b;
+  --border-gold: #b45309;
+  --accent-gold: #facc15;
+  --accent-cyan: #38bdf8;
+  --accent-crimson: #ef4444;
+  --accent-green: #4ade80;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  font-family: 'Pretendard', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* Top Navbar */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.75rem;
+  background: rgba(9, 13, 22, 0.92);
+  border-bottom: 2px solid #1e293b;
+  backdrop-filter: blur(8px);
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--accent-gold);
+}
+
+.brand-sub {
+  font-size: 0.8rem;
+  color: var(--accent-cyan);
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  border-radius: 4px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--text-main);
+  text-decoration: none;
+  font-size: 0.9rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.nav-links a:hover {
+  background: #1e293b;
+  color: var(--accent-cyan);
+}
+
+/* Hero Header Banner */
+.hero-header {
+  max-width: 1360px;
+  margin: 1.25rem auto 0.75rem;
+  padding: 0 1.25rem;
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.hero-text-box h1 {
+  font-size: 2rem;
+  line-height: 1.2;
+  color: var(--accent-gold);
+  text-shadow: 0 2px 10px rgba(250, 204, 21, 0.25);
+  margin-bottom: 0.5rem;
+}
+
+.hero-text-box p {
+  color: #cbd5e1;
+  font-size: 0.96rem;
+  margin-bottom: 0.85rem;
+}
+
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.badge-chip {
+  font-size: 0.78rem;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #e2e8f0;
+}
+
+.hero-art-preview {
+  border: 2px solid #334155;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
+  max-height: 185px;
+}
+
+.hero-art-preview img {
+  width: 100%;
+  height: 185px;
+  object-fit: cover;
+  image-rendering: pixelated;
+  display: block;
+}
+
+/* Main Game Frame (바람의 나라 클래식 2D 레이아웃) */
+.game-shell {
+  max-width: 1360px;
+  margin: 0.5rem auto 2rem;
+  padding: 0 1.25rem;
+  display: grid;
+  grid-template-columns: 1fr 370px;
+  gap: 1rem;
+}
+
+.viewport-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.canvas-wrapper {
+  position: relative;
+  background: #050811;
+  border: 3px solid #475569;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.75);
+}
+
+#gameCanvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  image-rendering: pixelated;
+  background: #0b1320;
+}
+
+.zone-overlay-badge {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid var(--accent-gold);
+  color: var(--accent-gold);
+  padding: 0.3rem 0.75rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+
+/* Active Nemesis Captain Target Overlay */
+.nemesis-target-overlay {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 320px;
+  background: rgba(15, 23, 42, 0.93);
+  border: 2px solid var(--accent-crimson);
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+}
+
+.target-cap-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.25rem;
+}
+
+#targetCapName {
+  font-weight: 800;
+  color: var(--accent-gold);
+  font-size: 0.95rem;
+}
+
+#targetCapTribe {
+  font-size: 0.76rem;
+  color: #cbd5e1;
+}
+
+.target-hp-bar {
+  position: relative;
+  height: 14px;
+  background: #1e293b;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 0.35rem 0;
+  border: 1px solid #475569;
+}
+
+#targetCapHpFill {
+  height: 100%;
+  background: linear-gradient(90deg, #dc2626, #f97316);
+  width: 100%;
+  transition: width 0.15s;
+}
+
+#targetCapHpText {
+  position: absolute;
+  inset: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-shadow: 0 1px 2px #000;
+}
+
+.target-traits-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.35rem;
+}
+
+.pill {
+  font-size: 0.72rem;
+  padding: 0.12rem 0.45rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.pill-broken { background: rgba(74, 222, 128, 0.2); color: #4ade80; border: 1px solid #4ade80; }
+.pill-enraged { background: rgba(239, 68, 68, 0.25); color: #fca5a5; border: 1px solid #ef4444; }
+.pill-iron { background: rgba(148, 163, 184, 0.2); color: #e2e8f0; border: 1px solid #94a3b8; }
+.pill-weak { background: rgba(250, 204, 21, 0.18); color: #fde047; border: 1px solid #eab308; }
+.pill-imm { background: rgba(56, 189, 248, 0.15); color: #7dd3fc; border: 1px solid #0284c7; }
+.pill-unknown { background: #1e293b; color: #94a3b8; }
+
+/* Skill Hotbar */
+.skill-hotbar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.45rem;
+}
+
+.skill-btn {
+  background: linear-gradient(180deg, #1e293b, #0f172a);
+  border: 2px solid #334155;
+  color: var(--text-main);
+  padding: 0.5rem 0.35rem;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.12s;
+}
+
+.skill-btn:hover {
+  border-color: var(--accent-cyan);
+  transform: translateY(-1px);
+}
+
+.skill-btn .key-hint {
+  display: inline-block;
+  font-size: 0.7rem;
+  background: #090d16;
+  color: var(--accent-gold);
+  padding: 0.05rem 0.35rem;
+  border-radius: 3px;
+  margin-bottom: 0.15rem;
+  font-weight: 700;
+}
+
+.skill-btn .skill-name {
+  display: block;
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+.skill-btn .skill-desc {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+/* Right Side Classic 바람의 나라 Status & Chat Column */
+.sidebar-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.retro-panel {
+  background: var(--bg-panel);
+  border: 2px solid #334155;
+  border-radius: 8px;
+  padding: 0.85rem;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.panel-title {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+  margin-bottom: 0.55rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #1e293b;
+  padding-bottom: 0.35rem;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.83rem;
+  margin-bottom: 0.3rem;
+}
+
+.gauge-bar {
+  height: 12px;
+  background: #090d16;
+  border: 1px solid #334155;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.45rem;
+}
+
+.gauge-hp { background: linear-gradient(90deg, #dc2626, #ef4444); height: 100%; width: 100%; }
+.gauge-mp { background: linear-gradient(90deg, #1d4ed8, #38bdf8); height: 100%; width: 100%; }
+
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+}
+
+.zone-warp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+}
+
+.retro-btn {
+  background: #1e293b;
+  color: #f8fafc;
+  border: 1px solid #475569;
+  padding: 0.48rem 0.65rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.retro-btn:hover {
+  border-color: var(--accent-gold);
+  background: #283548;
+}
+
+.btn-gold { background: linear-gradient(180deg, #b45309, #78350f); border-color: #facc15; }
+.btn-cyan { background: linear-gradient(180deg, #0369a1, #0c4a6e); border-color: #38bdf8; }
+.btn-red { background: linear-gradient(180deg, #b91c1c, #7f1d1d); border-color: #f87171; }
+.btn-green { background: linear-gradient(180deg, #15803d, #14532d); border-color: #4ade80; }
+.btn-amber { background: linear-gradient(180deg, #d97706, #92400e); border-color: #fde047; }
+
+/* Classic 바람의 나라 Chat & System Log Box */
+.retro-chat-log {
+  height: 195px;
+  overflow-y: auto;
+  background: #060911;
+  border: 1px solid #1e293b;
+  border-radius: 6px;
+  padding: 0.5rem;
+  font-size: 0.79rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.chat-line { line-height: 1.35; }
+.chat-system { color: #fef08a; }
+.chat-nemesis { color: #fca5a5; font-weight: 700; }
+.chat-intel { color: #4ade80; }
+.chat-dominate { color: #38bdf8; font-weight: 700; }
+.chat-execute { color: #fb923c; font-weight: 700; }
+.chat-shame { color: #e879f9; font-weight: 700; }
+.chat-skill { color: #f97316; }
+.chat-shout { color: #fde047; background: rgba(250, 204, 21, 0.12); padding: 2px 4px; border-radius: 3px; }
+.chat-chat { color: #e2e8f0; }
+
+.chat-input-row {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: 0.45rem;
+}
+
+.chat-input-row input {
+  flex: 1;
+  background: #090d16;
+  border: 1px solid #334155;
+  color: #fff;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+/* Modals (Nemesis Army Hierarchy, Domination Wheel, Revenge Death) */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(5, 8, 17, 0.86);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.army-modal-card {
+  width: 100%;
+  max-width: 1180px;
+  max-height: 92vh;
+  overflow-y: auto;
+  background: #0f172a;
+  border: 2px solid var(--accent-gold);
+  border-radius: 10px;
+  padding: 1.25rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+}
+
+.army-layout {
+  display: grid;
+  grid-template-columns: 1.65fr 1fr;
+  gap: 1.15rem;
+  margin-top: 0.75rem;
+}
+
+.hierarchy-tier-label {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0.45rem 0 0.25rem;
+}
+
+.overlord-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.overlord-row .nemesis-card {
+  width: 280px;
+  border-color: #a855f7;
+}
+
+.warchief-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.55rem;
+  margin-bottom: 0.55rem;
+}
+
+.captain-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.55rem;
+}
+
+.nemesis-card {
+  background: #1e293b;
+  border: 2px solid #334155;
+  border-radius: 8px;
+  padding: 0.55rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.nemesis-card:hover {
+  border-color: var(--accent-gold);
+  transform: translateY(-2px);
+}
+
+.nemesis-card.is-selected {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.35);
+}
+
+.nemesis-card.is-dominated {
+  border-color: var(--accent-cyan);
+  background: rgba(14, 116, 144, 0.22);
+}
+
+.nemesis-card.is-dead {
+  opacity: 0.48;
+  filter: grayscale(0.7);
+}
+
+.nemesis-card-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  margin-bottom: 0.25rem;
+}
+
+.nemesis-card-name {
+  font-weight: 800;
+  font-size: 0.88rem;
+  color: #f8fafc;
+}
+
+.nemesis-card-sub {
+  font-size: 0.73rem;
+  color: #94a3b8;
+  margin-bottom: 0.25rem;
+}
+
+.weak-pill { font-size: 0.7rem; color: #fde047; }
+.unknown-pill { font-size: 0.7rem; color: #94a3b8; }
+
+.tag { padding: 1px 5px; border-radius: 4px; font-weight: 700; }
+.tag-dom { background: rgba(56, 189, 248, 0.2); color: #38bdf8; }
+.tag-vendetta { background: rgba(239, 68, 68, 0.25); color: #fca5a5; }
+.tag-dead { background: #0f172a; color: #64748b; }
+.tag-hostile { background: #0f172a; color: #facc15; }
+
+.inspector-box {
+  background: #111827;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 0.95rem;
+}
+
+.inspector-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+}
+
+.inspector-quote {
+  margin: 0.55rem 0;
+  padding: 0.5rem 0.75rem;
+  background: #090d16;
+  border-left: 3px solid var(--accent-crimson);
+  font-style: italic;
+  font-size: 0.85rem;
+  color: #e2e8f0;
+}
+
+.inspector-stats {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  color: #cbd5e1;
+  margin-bottom: 0.65rem;
+}
+
+.inspector-traits h4 {
+  font-size: 0.82rem;
+  color: var(--accent-cyan);
+  margin: 0.5rem 0 0.2rem;
+}
+
+.inspector-traits ul {
+  list-style: none;
+  font-size: 0.79rem;
+}
+
+.inspector-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: 0.85rem;
+}
+
+.choice-modal-card {
+  width: 100%;
+  max-width: 560px;
+  background: #0f172a;
+  border: 2px solid var(--accent-cyan);
+  border-radius: 10px;
+  padding: 1.4rem;
+  text-align: center;
+}
+
+.choice-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+/* Landing Page Sections Below Live Game */
+.landing-section {
+  max-width: 1360px;
+  margin: 2.5rem auto;
+  padding: 0 1.25rem;
+}
+
+.section-heading {
+  font-size: 1.55rem;
+  color: var(--accent-gold);
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--accent-cyan);
+  padding-left: 0.75rem;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.feature-card {
+  background: var(--bg-panel);
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 1.15rem;
+}
+
+.feature-card h3 {
+  color: var(--accent-cyan);
+  font-size: 1.05rem;
+  margin-bottom: 0.45rem;
+}
+
+.art-showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 1.25rem;
+}
+
+.art-card {
+  background: var(--bg-panel);
+  border: 1px solid #334155;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.art-card img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  image-rendering: pixelated;
+  display: block;
+}
+
+.art-card-caption {
+  padding: 0.85rem;
+  font-size: 0.88rem;
+  color: #cbd5e1;
+}
+
+@media (max-width: 1024px) {
+  .hero-header,
+  .game-shell,
+  .army-layout {
+    grid-template-columns: 1fr;
+  }
+  .skill-hotbar {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

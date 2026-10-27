@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>바람의 네메시스: 흉수군단록 (Nemesis of the Winds) — 2D Pixel Art Nemesis RPG</title>
+  <meta name="description" content="섀도우 오브 모르도르/워의 네메시스 시스템(Nemesis System)을 클래식 바람의 나라 감성의 2D 픽셀 아트 액션 RPG로 완벽 구현한 웹 라이브 데모 게임" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- Top Bar -->
+  <nav class="top-nav">
+    <div class="brand-logo">
+      <span>⚔️ 바람의 네메시스: 흉수군단록</span>
+      <span class="brand-sub">Nemesis of the Winds · 2D Pixel RPG</span>
+    </div>
+    <div class="nav-links">
+      <a href="#live-game">🎮 라이브 데모 플레이</a>
+      <a href="#nemesis-system-info">👑 네메시스 시스템</a>
+      <a href="#baram-world-info">🏯 바람의 나라 월드 & 기술</a>
+      <a href="#pixel-art-gallery">🎨 픽셀 아트 쇼케이스</a>
+      <a href="https://github.com/jeiel85/nemesis-wind" target="_blank" rel="noopener">GitHub 저장소 ↗</a>
+    </div>
+  </nav>
+
+  <!-- Hero Introduction + Key Art -->
+  <header class="hero-header">
+    <div class="hero-text-box">
+      <h1>"네놈이 불태운 도깨비가 흉터를 품고 백부장이 되어 돌아왔다!"</h1>
+      <p>
+        <strong>《미들 어스: 섀도우 오브 모르도르 &amp; 섀도우 오브 워》</strong>의 핵심인 절차적 군단 계급·기억·복수·지배 메커니즘(<strong>Nemesis System</strong>)을
+        90년대 한국 클래식 2D 도트 MMORPG <strong>《바람의 나라》</strong>의 국내성·주막·흉가·헬파이어 감성으로 재탄생시킨 2D 픽셀 아트 RPG입니다.
+      </p>
+      <div class="hero-badges">
+        <span class="badge-chip">👑 군단 계급도 (백부장·전투대장·대군주)</span>
+        <span class="badge-chip">🩸 플레이어 사망 시 졸개 승진 &amp; 복수</span>
+        <span class="badge-chip">🔥 죽음 극복(Cheated Death) &amp; 화상/봉합 흉터</span>
+        <span class="badge-chip">✋ 천명 낙인(지배) · 처형 · 수치(광기/미치광이)</span>
+        <span class="badge-chip">🐿️ "다람쥐를 뿌려라!" &amp; 헬파이어</span>
+      </div>
+    </div>
+    <div class="hero-art-preview">
+      <img src="./assets/art/hero_banner.png" alt="바람의 네메시스 히어로 배너" />
+    </div>
+  </header>
+
+  <!-- Main Playable 2D Pixel Art Game Shell -->
+  <main id="live-game" class="game-shell">
+    <!-- Left Column: 2D Pixel Viewport + Skill Hotbar -->
+    <div class="viewport-column">
+      <div class="canvas-wrapper">
+        <canvas id="gameCanvas" width="880" height="540"></canvas>
+
+        <!-- Current Zone Badge -->
+        <div id="zoneTitleBadge" class="zone-overlay-badge">국내성 남문 &amp; 주막 (안전)</div>
+
+        <!-- Active Nemesis Captain Encounter HUD -->
+        <div id="activeNemesisBanner" class="nemesis-target-overlay hidden">
+          <div class="target-cap-header">
+            <span id="targetCapName">도살자 아크골 (Lv.5)</span>
+            <span id="targetCapTribe">혈마족 · 암살자</span>
+          </div>
+          <div class="target-hp-bar">
+            <div id="targetCapHpFill"></div>
+            <span id="targetCapHpText">220 / 220</span>
+          </div>
+          <div id="targetCapTraits" class="target-traits-row"></div>
+        </div>
+      </div>
+
+      <!-- Classic 바람의 나라 + Shadow of War Skill Hotbar -->
+      <div class="skill-hotbar">
+        <button class="skill-btn" data-skill="melee">
+          <span class="key-hint">Space</span>
+          <span class="skill-name">⚔️ 건곤대나이</span>
+          <span class="skill-desc">전방 근접 베기</span>
+        </button>
+        <button class="skill-btn" data-skill="hellfire">
+          <span class="key-hint">1</span>
+          <span class="skill-name">🔥 헬파이어</span>
+          <span class="skill-desc">화염 공포 유발</span>
+        </button>
+        <button class="skill-btn" data-skill="shadow">
+          <span class="key-hint">2</span>
+          <span class="skill-name">⚡ 초혼비무</span>
+          <span class="skill-desc">그림자 순간습격</span>
+        </button>
+        <button class="skill-btn" data-skill="nova">
+          <span class="key-hint">3</span>
+          <span class="skill-name">❄️ 삼매빙폭</span>
+          <span class="skill-desc">광역 빙염 폭발</span>
+        </button>
+        <button class="skill-btn" data-skill="summon">
+          <span class="key-hint">4</span>
+          <span class="skill-name">✋ 경호원/괴수</span>
+          <span class="skill-desc">아군 소환·야수공포</span>
+        </button>
+        <button class="skill-btn" data-skill="heal">
+          <span class="key-hint">5</span>
+          <span class="skill-name">💚 공력을운</span>
+          <span class="skill-desc">마력으로 체력회복</span>
+        </button>
+        <button class="skill-btn" data-skill="interact">
+          <span class="key-hint">E</span>
+          <span class="skill-name">👑 제압 / 심문</span>
+          <span class="skill-desc">낙인·처형·수치·주막</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Right Column: Classic 바람의 나라 Status Bar, Nemesis Controls & Chat Log -->
+    <aside class="sidebar-column">
+      <!-- Player Status Panel -->
+      <section class="retro-panel">
+        <div class="panel-title">
+          <span id="hudPlayerName">무휼검객 (Lv.7)</span>
+          <span id="hudPlayerEquip" style="font-size:0.76rem;color:#38bdf8;">이가닌자의검 +3</span>
+        </div>
+        <div class="stat-row">
+          <span>체력 (HP)</span>
+          <span id="hudHpText">360 / 360</span>
+        </div>
+        <div class="gauge-bar"><div id="hudHpFill" class="gauge-hp"></div></div>
+
+        <div class="stat-row">
+          <span>마력 (MP)</span>
+          <span id="hudMpText">220 / 220</span>
+        </div>
+        <div class="gauge-bar"><div id="hudMpFill" class="gauge-mp"></div></div>
+
+        <div class="stat-row">
+          <span>경험치 (EXP)</span>
+          <span id="hudExpText">0 / 160</span>
+        </div>
+        <div class="stat-row">
+          <span>금전 (Gold)</span>
+          <span id="hudGoldText">500 전</span>
+        </div>
+        <div class="stat-row">
+          <span>천명 지배 현황</span>
+          <span id="hudDomCount" style="color:#38bdf8;font-weight:700;">0 / 8 명 지배 중</span>
+        </div>
+      </section>
+
+      <!-- Nemesis Command & Zone Teleport Panel -->
+      <section class="retro-panel">
+        <div class="panel-title">
+          <span>👑 네메시스 군단 지휘 &amp; 구역 이동</span>
+        </div>
+        <div class="quick-actions-grid" style="margin-bottom:0.55rem;">
+          <button id="btnOpenArmy" class="retro-btn btn-gold">👑 군단 계급도 [N]</button>
+          <button id="btnAdvanceTime" class="retro-btn btn-cyan">⏳ 시간 경과 [T]</button>
+          <button id="btnInterrogateWorm" class="retro-btn btn-green">🕵️ 밀정 심문 (약점파악)</button>
+          <button id="btnSquirrelShout" class="retro-btn btn-amber">🐿️ 다람쥐를 뿌려라!</button>
+        </div>
+        <div class="zone-warp-grid">
+          <button class="retro-btn" data-zone-jump="gungnae">🏯 국내성 주막 (안전)</button>
+          <button class="retro-btn" data-zone-jump="outskirts">🌲 국내성 외곽 (초급)</button>
+          <button class="retro-btn" data-zone-jump="haunted">👻 흉가 숲 (중급)</button>
+          <button class="retro-btn btn-red" data-zone-jump="fortress">🌋 혈마성채 (대군주)</button>
+        </div>
+      </section>
+
+      <!-- Classic 바람의 나라 System & Nemesis Chat Window -->
+      <section class="retro-panel" style="flex:1;display:flex;flex-direction:column;">
+        <div class="panel-title">
+          <span>📜 천명록 &amp; 바람 채팅창</span>
+          <button id="btnMuteAudio" class="retro-btn" style="padding:2px 8px;font-size:0.72rem;">🔊 효과음 끄기</button>
+        </div>
+        <div id="retroChatLog" class="retro-chat-log"></div>
+        <div class="chat-input-row">
+          <input id="chatInput" type="text" placeholder="외치기 입력 (예: 다람쥐를 뿌려라, 헬파이어)" />
+          <button id="btnSendChat" class="retro-btn btn-cyan">전송</button>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <!-- MODAL 1: Nemesis Army Hierarchy (사우론의 군단 / 흉수 군단 계급도) -->
+  <div id="armyModal" class="modal-backdrop hidden">
+    <div class="army-modal-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #334155;padding-bottom:0.65rem;">
+        <div>
+          <h2 style="color:var(--accent-gold);font-size:1.35rem;">👑 혈마 흉수군단 계급도 (Nemesis Army Hierarchy)</h2>
+          <p style="font-size:0.83rem;color:#94a3b8;">
+            백부장(Captain) · 전투대장(Warchief) · 대군주(Overlord)의 실시간 서열, 약점/면역, 권력 투쟁 및 아군 지배 현황을 관리합니다.
+          </p>
+        </div>
+        <button id="btnCloseArmy" class="retro-btn btn-red">✖ 닫기 [N]</button>
+      </div>
+
+      <div class="army-layout">
+        <div>
+          <div class="hierarchy-tier-label">👑 혈마성채 대군주 (Overlord)</div>
+          <div id="armyOverlordSlot" class="overlord-row"></div>
+
+          <div class="hierarchy-tier-label">⚔️ 성채 수호 전투대장 (Warchiefs)</div>
+          <div id="armyWarchiefRow" class="warchief-row"></div>
+
+          <div class="hierarchy-tier-label">🛡️ 각 사냥터 주둔 백부장 (Captains)</div>
+          <div id="armyCaptainGrid" class="captain-grid"></div>
+
+          <div class="hierarchy-tier-label" style="margin-top:0.85rem;">🔥 진행 중인 군단 내 권력 투쟁 ([T] 시간 경과 시 자동 결판)</div>
+          <div id="armyStrugglesList" style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:0.35rem;"></div>
+        </div>
+
+        <!-- Selected Captain Detailed Inspector -->
+        <div id="leaderInspectorBox" class="inspector-box"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: Broken Captain Domination Choice ([낙인] / [처형] / [수치]) -->
+  <div id="dominationModal" class="modal-backdrop hidden">
+    <div class="choice-modal-card">
+      <div style="font-size:0.8rem;color:var(--accent-cyan);font-weight:700;">✋ 천명의 심판 (Nemesis Domination)</div>
+      <h2 id="domCapName" style="color:var(--accent-gold);margin:0.25rem 0;">도살자 아크골 (Lv.5)</h2>
+      <div id="domCapMeta" style="font-size:0.85rem;color:#cbd5e1;margin-bottom:0.6rem;">혈마족 · 암살자</div>
+      <blockquote id="domCapQuote" class="inspector-quote">"크윽... 내 의지가 무너지다니..."</blockquote>
+      <div id="domIronWillNotice" class="hidden" style="background:rgba(239,68,68,0.18);border:1px solid #ef4444;color:#fca5a5;padding:0.45rem;border-radius:6px;font-size:0.8rem;margin:0.5rem 0;"></div>
+
+      <div class="choice-buttons-grid">
+        <button id="btnChoiceDominate" class="retro-btn btn-cyan" style="padding:0.85rem 0.5rem;">
+          <div style="font-size:1.1rem;margin-bottom:0.2rem;">✋ 천명 낙인 (지배)</div>
+          <div style="font-size:0.72rem;font-weight:400;color:#e0f2fe;">아군 수하 및 경호대장으로 복속</div>
+        </button>
+        <button id="btnChoiceExecute" class="retro-btn btn-red" style="padding:0.85rem 0.5rem;">
+          <div style="font-size:1.1rem;margin-bottom:0.2rem;">⚔️ 처형 집행</div>
+          <div style="font-size:0.72rem;font-weight:400;color:#fee2e2;">즉시 처단 · 장비/경험치 획득 (죽음극복 가능)</div>
+        </button>
+        <button id="btnChoiceShame" class="retro-btn btn-amber" style="padding:0.85rem 0.5rem;">
+          <div style="font-size:1.1rem;margin-bottom:0.2rem;">🔥 수치 부여</div>
+          <div style="font-size:0.72rem;font-weight:400;color:#fef3c7;">레벨 강등 · 강철의지 파괴 · 광기/미치광이 확률</div>
+        </button>
+      </div>
+      <button id="btnChoiceClose" class="retro-btn">전투로 돌아가기</button>
+    </div>
+  </div>
+
+  <!-- MODAL 3: Player Death -> Nemesis Promotion & Revenge Cutscene -->
+  <div id="deathRevengeModal" class="modal-backdrop hidden">
+    <div class="choice-modal-card" style="border-color:var(--accent-crimson);">
+      <div style="font-size:0.85rem;color:#fca5a5;font-weight:800;">💀 검객 패배 — 네메시스 서열 변동 발생!</div>
+      <h2 id="revengeHeadline" style="color:var(--accent-gold);margin:0.4rem 0;">신임 백부장 승진!</h2>
+      <div id="revengeTribeInfo" style="font-size:0.84rem;color:#cbd5e1;margin-bottom:0.65rem;"></div>
+      <blockquote id="revengeSubtext" class="inspector-quote"></blockquote>
+      <p style="font-size:0.82rem;color:#94a3b8;margin-bottom:1rem;">
+        당신을 쓰러뜨린 적이 전공을 인정받아 계급과 레벨이 상승하고 <strong>[복수 대상 (Vendetta Target)]</strong>으로 지정되었습니다!
+      </p>
+      <button id="btnRespawnGungnae" class="retro-btn btn-gold" style="width:100%;padding:0.75rem;">
+        🏯 국내성 성황당/주막에서 부활하여 복수하러 가기
+      </button>
+    </div>
+  </div>
+
+  <!-- LANDING PAGE SECTION 1: Nemesis System Mechanics Breakdown -->
+  <section id="nemesis-system-info" class="landing-section">
+    <h2 class="section-heading">👑 완벽 구현된 《섀도우 오브 모르도르 / 워》 네메시스 시스템</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>1. 절차적 군단 계급도 (Army Hierarchy)</h3>
+        <p>
+          8명의 <strong>백부장(Captains)</strong>, 3명의 <strong>전투대장(Warchiefs)</strong>, 그리고 성채를 지배하는 1명의 <strong>대군주(Overlord)</strong>가 실시간으로 살아 움직입니다. 5개 부족(혈마족·화염깨비족·해골망령족·야수사냥족·기계장인족)과 5개 전투 병과가 고유한 외형과 대사를 생성합니다.
+        </p>
+      </div>
+      <div class="feature-card">
+        <h3>2. 플레이어 사망 시 졸개 승진 &amp; 복수 (Vendetta)</h3>
+        <p>
+          전투 중 사망하면 단순한 게임오버가 아니라, 당신의 숨통을 끊은 이름 없는 도깨비 졸개(심지어 <strong>분노한 다람쥐</strong>까지!)가 고유한 이름과 칭호(예: <em>"바람검객 살해자"</em>, <em>"다람쥐 패왕"</em>)를 얻어 정식 백부장으로 승진합니다.
+        </p>
+      </div>
+      <div class="feature-card">
+        <h3>3. 강점·약점·면역 &amp; 실시간 전투 적응 (Adaptation)</h3>
+        <p>
+          초록색 오라를 지닌 <strong>밀정 졸개(Worm)</strong>를 심문하면 백부장의 치명적 약점(예: <em>화염 공포</em>, <em>야수 공포</em>)을 파악할 수 있습니다. 반면 지능적인 백부장에게 동일한 술법을 반복하면 전투 중 이를 간파하고 <strong>[전투 적응!]</strong>으로 무효화합니다.
+        </p>
+      </div>
+      <div class="feature-card">
+        <h3>4. 죽음 극복 (Cheated Death) &amp; 흉터 복귀</h3>
+        <p>
+          처형하거나 헬파이어로 불태워 죽인 백부장이 죽음을 이겨내고 <strong>화상 흉터, 애꾸눈 안대, 강령술 봉합선</strong>을 단 채 <em>"화염에서 돌아온 자"</em>가 되어 사냥터 진입 시 기습합니다.
+        </p>
+      </div>
+      <div class="feature-card">
+        <h3>5. 천명 낙인(지배) · 처형 · 수치(광기/미치광이)</h3>
+        <p>
+          체력이 낮아지거나 공포에 질려 <strong>[의지 붕괴]</strong> 상태가 된 백부장에게 <code>[E]</code> 키를 눌러 아군으로 세뇌(낙인)하거나, 처형하여 장비를 얻거나, <strong>수치(Shame)</strong>를 주어 강철 의지를 파괴할 수 있습니다. 수치를 당한 적은 확률적으로 정신이 붕괴되어 다람쥐만 찾거나, 오히려 +8레벨 <strong>미치광이(Maniac)</strong>로 폭주합니다!
+        </p>
+      </div>
+      <div class="feature-card">
+        <h3>6. 배신 (Betrayal) &amp; 구원자 난입 (Savior)</h3>
+        <p>
+          지배한 백부장이 너무 많아지면 확률적으로 낙인을 끊고 <strong>배신</strong>하여 기습하며, 반대로 플레이어가 죽기 직전의 결정타를 맞을 때 아군 경호대장이 난입해 목숨을 구해주는 <strong>구원자(Savior)</strong> 이벤트가 발생합니다.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LANDING PAGE SECTION 2: Kingdom of the Winds World & Controls -->
+  <section id="baram-world-info" class="landing-section">
+    <h2 class="section-heading">🏯 《바람의 나라》 클래식 2D 픽셀 월드 &amp; 조작 가이드</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>🎮 조작법 (Keyboard &amp; Mouse)</h3>
+        <p>
+          • <code>WASD</code> 또는 <code>방향키</code>: 4방향 이동<br />
+          • <code>Space</code>: 건곤대나이 (전방 근접 검격)<br />
+          • <code>1</code>: 헬파이어 (화염 기둥 필살기)<br />
+          • <code>2</code>: 초혼비무 (원거리 그림자 순간이동 급습)<br />
+          • <code>3</code>: 삼매빙폭 (주변 광역 빙염 폭발)<br />
+          • <code>4</code>: 경호대장 &amp; 신수 다람쥐 소환<br />
+          • <code>5</code>: 공력을운 (마력 소모 자힐)<br />
+          • <code>E</code>: 붕괴된 백부장 제압 / 밀정 심문 / 주막 국밥 회복<br />
+          • <code>N</code>: 군단 계급도 열기 / <code>T</code>: 시간 경과
+        </p>
+      </div>
+      <div class="feature-card">
+        <h3>🗺️ 4대 사냥터 및 성채 구역</h3>
+        <p>
+          • <strong>국내성 남문 &amp; 왈숙네 주막</strong>: 체력/마력을 회복하고 천명단에서 군단을 지휘하는 안전 거점<br />
+          • <strong>국내성 외곽 사냥터</strong>: 다람쥐·토끼·밀정 졸개와 초급 백부장(Lv.3~9)이 배회하는 평원<br />
+          • <strong>흉가 &amp; 도깨비 숲</strong>: 사령술과 암살에 능한 중급 백부장(Lv.9~16)이 매복하는 숲<br />
+          • <strong>혈마성채 심층부</strong>: 용암 해자 너머 3인의 전투대장과 혈마대군주 아크라카(Lv.25)가 군림하는 최종 결전지
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LANDING PAGE SECTION 3: Pixel Art Showcase -->
+  <section id="pixel-art-gallery" class="landing-section">
+    <h2 class="section-heading">🎨 2D 픽셀 아트 &amp; 네메시스 군단 아트워크 쇼케이스</h2>
+    <div class="art-showcase-grid">
+      <div class="art-card">
+        <img src="./assets/art/hero_banner.png" alt="고구려 천명 검객과 혈마 군단 배너" />
+        <div class="art-card-caption">
+          <strong>천명(天命)의 검객 vs 혈마 흉수군단</strong> — 푸른 손의 낙인(Domination Brand)과 고구려 검술로 군단을 복속시키는 키 아트
+        </div>
+      </div>
+      <div class="art-card">
+        <img src="./assets/art/nemesis_portraits.png" alt="네메시스 부족별 백부장 및 대군주 초상화" />
+        <div class="art-card-caption">
+          <strong>네메시스 부족별 지휘관 도트 초상화</strong> — 혈마족 암살자, 화염에서 돌아온 화염깨비 광전사, 해골망령 강령술사, 강철 대군주
+        </div>
+      </div>
+      <div class="art-card">
+        <img src="./assets/art/village_and_fortress_bg.png" alt="국내성 주막과 혈마성채 2D 타일맵 전경" />
+        <div class="art-card-caption">
+          <strong>국내성 평화 구역 &amp; 혈마성채 대조 전경</strong> — 다람쥐가 뛰어노는 국내성 외곽과 용암이 흐르는 혈마성채의 2D 탑뷰 픽셀 아트
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="text-align:center;padding:2rem 1rem;border-top:1px solid #1e293b;color:#64748b;font-size:0.84rem;margin-top:3rem;">
+    바람의 네메시스: 흉수군단록 (Nemesis of the Winds) · Classic 2D Pixel Art RPG with Full Nemesis System
+  </footer>
+
+  <script type="module" src="./src/game.js"></script>
+</body>
+</html>

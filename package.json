@@ -1,0 +1,22 @@
+{
+  "name": "nemesis-wind",
+  "version": "1.0.0",
+  "description": "바람의 네메시스: 흉수군단록 (Nemesis of the Winds) — Middle-earth: Shadow of Mordor/War Nemesis System in a 2D Pixel Art Kingdom of the Winds (바람의 나라) RPG",
+  "type": "module",
+  "scripts": {
+    "assets": "node scripts/generate_pixel_assets.mjs",
+    "start": "npx --yes serve ."
+  },
+  "keywords": [
+    "nemesis-system",
+    "pixel-art",
+    "2d-rpg",
+    "kingdom-of-the-winds",
+    "baram-ui-nara",
+    "shadow-of-mordor",
+    "shadow-of-war",
+    "html5-canvas",
+    "javascript-game"
+  ],
+  "license": "MIT"
+}
